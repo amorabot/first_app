@@ -1,0 +1,25 @@
+{
+  "name": "first-app",
+  "version": "0.0.1",
+  "description": "Aplicação para cadastro de usuários",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amorabot/first_app.git"
+  },
+  "keywords": [
+    "node",
+    "user",
+    "management",
+    "app"
+  ],
+  "author": "Daniel Amorim Bessa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amorabot/first_app/issues"
+  },
+  "homepage": "https://github.com/amorabot/first_app#readme"
+}
