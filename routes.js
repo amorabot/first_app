@@ -1,8 +1,23 @@
 const express = require('express');
 const router = express.Router();
+const app = express();
 const faker = require('Faker');
 
-let db = require('./db'); //um módulo feito manualmente e que será demandado e solicitado aqui.
+// let db = require('./db'); //um módulo feito manualmente e que será demandado e solicitado aqui.
+
+//especifica a pasta contendo arquivos estáticos.
+//o nome 'public' não precisará ser colocado na rota
+//para serem alcançados os arquivos e pastas que estão dentro dele.
+//por isso na imagem que está na página home.ejs só há o indicativo para images
+router.use(express.static('public'));
+// por padrão, se não houver roteamento/conteúdo na rota, o padrão a ser usado vai ser a pasta com conteudo estático padrão: public
+
+//Exemplo de rotas:
+/*
+http://localhost:3000/css
+http://localhost:3000/images
+http://localhost:3000/index.html
+*/
 
 //os parametros na callback são passados pelo método get: a requisição de info feita ao navegador e a resposta para ele. os nomes das var. não importam.
 router.get('/', (req, res)=>{ //o router vai pegar o endereço da barra do navegador que irá conter uma barra, se conseguir, vai tratar esse endereço conforme a função:
@@ -24,7 +39,7 @@ router.get('/about', (req,res)=>{
     res.render('pages/about', {usuarios});
 });
 
-router.get('curriculo', (req,res)=>{
+router.get('/curriculo', (req,res)=>{
     res.send('Meu curriculo');
 });
 
