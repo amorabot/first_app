@@ -3,34 +3,34 @@ let cadastro;
 
 function update(index,link){
     //seleciona todas as tags que sejam td 
-    let tds = document.querySelectorAll(`td[data-index-row='${index}']`);
-    let spans = document.querySelectorAll(`td[data-index-row='${index}'] > span`);
-    let inputs = document.querySelectorAll(`td[data-index-row='${index}'] > input`);
+    let tds = document.querySelectorAll(`td[data-index-row='${index}']`); //as td's contêm os itens desejados, será útil selecioná-las
+    let spans = document.querySelectorAll(`td[data-index-row='${index}'] > span`); //dentro da td especificada, selecionamos os span dentro dela (>span)
+    let inputs = document.querySelectorAll(`td[data-index-row='${index}'] > input`); //dentro da td especificada, selecionamos os input dentro dela (>input)
 
-    let lenTds = tds.length-1; //numero de tds de uma linha da tabela
-    let linkUpdate = tds[lenTds-1]; //retorna o conteudo da penultima td, no caso, o link de update
-    let linkRemove = tds[lenTds];
+    let lenTds = tds.length-1; //numero de tds em uma linha da tabela (especificamente, da linha que chamou a função)
+    let linkUpdate = tds[lenTds-1]; //se refere à td que contém o icone de update(lápis)
+    let linkRemove = tds[lenTds]; // se refere à td que contém o ícone de delete(trash)
 
-    let lenInputs = inputs.length; //pega numero de inputs
+    let lenInputs = inputs.length; //conta quantos inputs existem na tabela(visíveis ou não, estão lá)
 
-    let button = inputs[lenInputs-1]; //cria uma conexao com o input que é do tipo button
+    let button = inputs[lenInputs-1]; //o ultimo input da lista(sinalizado pelo tamanho -1 no vetor)possui o botão de 'atualizar', que deve ser selecinado e mostrado depois
 
 
 
-    linkUpdate.className='hidden';
-    linkRemove.className='hidden';
-    tds[lenTds-2].className='show'; //mostra butao de envio
+    linkUpdate.className='hidden'; //com o icone de update selecionado, temos que fazê-lo sumir (e depois fazer os inputs com atributo 'hidden' aparecer)
+    linkRemove.className='hidden'; //mesma coisa, selecionamos o icone ali em cima e setamos a classe 'hidden' pra ele
+    tds[lenTds-2].className='show'; //mostra a td que contém o botão de 'atualizar'
 
      //esconde todos os campos de exibição de dados do cadastro
-    for(let cont=0;cont<spans.length;cont++){
-        if(spans[cont].className=="show"){
+    for(let cont=0;cont<spans.length;cont++){ //busca pela seguinte coisa: se um span está visível, torne-o invisível
+        if(spans[cont].className=="show"){    //senão, deixe-o visível
             spans[cont].className="hidden";
         } else{
             spans[cont].className="show";
         }
     }
     //mostra os campos de preenchimento para o cadastro
-    for(let cont=0;cont<inputs.length;cont++){
+    for(let cont=0;cont<inputs.length;cont++){ //mesma coisa do de cima, só que para os inputs que colocaremos a informação
         if(inputs[cont].className=="hidden"){
             inputs[cont].className="show";
         }
@@ -156,20 +156,30 @@ function update(index,link){
 
 }
 
-function remove(index,_name,link){ //(index,link)
+function remove(index,_name,link){
+    //index: linha da tabela | _name: string com o nome do usuário naquela posição | link: linkRemove="/cadastro/remove/"(rota que será tratada o post da informação)
 
-    //escuta se o botao foi clicado
+    //essa função será chamada sempre que o ícone de remove for clicado:
 
-    const http = new XMLHttpRequest(); //cria um objeto para requisição ao servidor
-    const url=link;
+    const http = new XMLHttpRequest(); //cria um objeto para requisição ao servidor/cria um objeto que pode transportar a informação para o servidor
+    const url=link; //aqui é atribuído à 'url' o endereço que queremos enviar essa requisição
 
     http.open("POST",link,true); //abre uma comunicação com o servidor através de uma requisição POST
+
+    // parametros de http.open: .open('method', url, boolean)
+
+    // method: que tipo de requisição será: POST? GET? PUT? etc...
+    // url: para que endereço será enviada a requisição
+    // boolean: diz se o envio da requisição será assíncronamente(true) ou de forma síncrona(false)
+
     http.setRequestHeader('Content-Type','application/json'); //constroi um cabecalho http para envio dos dados
 
-    //dataToSend = JSON.stringify({id:index}); //transforma o objeto literal em uma string JSON que é a representação em string de um objeto JSON
+
     dataToSend = JSON.stringify({name:_name}); //transforma o objeto literal em uma string JSON que é a representação em string de um objeto JSON
+    // esse passo é importante pois converte os dados em algo compreensivel para o navegador(que irá receber a informação em breve)
 
     http.send(dataToSend);//envia dados para o servidor na forma de JSON
+    //o "envelope" na forma de 'http' foi criado e endereçado, resta preenchê-lo(passo anterior) e, agora, enviá-lo (http.send(conteúdoJSON))
 
     /* este codigo abaixo foi colocado para que a interface de cadastro so seja modificada quando se receber um aviso do servidor que a modificacao foi feita com sucesso. No caso o aviso vem na forma do codigo 200 de HTTP: OK */
 
@@ -188,7 +198,7 @@ function remove(index,_name,link){ //(index,link)
 
     // baseado nos valores acima apresentados, o codigo abaixo mostra o que foi enviado pelo servidor como resposta ao envio de dados. No caso, se o request foi finalizado e o response foi recebido, a mensagem recebida do servidor eh mostrada no console do navegador. esse codigo foi feito apenas para verificar se tudo ocorreu bem no envio
 
-    http.onload = ()=>{ 
+    http.onload = ()=>{ //aqui, basicamente, checamos se a operação de enviar o arquivo JSON para o endereço foi bem sucedida. se foi, chamamos a função descrita logo a seguir.
         
         //seleciona todas as tags que sejam td 
         let tr = document.querySelector(`table#list > tbody > tr[data-index-row='${index}']`);
@@ -232,3 +242,11 @@ function list(){
     //}
 
 }
+
+// function selected(index){
+//     let itemsNavbar = document.querySelectorAll(`li.nav-item`);
+//     // for(let i = 0; i<itemsNavbar.length; i++){
+//     //     itemsNavbar[i].className = 'inactive'
+//     // }
+//     itemsNavbar[index-1].className = 'nav-item active'
+// }
