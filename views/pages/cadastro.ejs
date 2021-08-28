@@ -66,7 +66,7 @@
                     </td>
                     <td data-index-row="<%=index%>" class="hidden" data-index-row="<%=index%>">
                         <input type="button" value="Atualizar" class="hidden" >
-                    </td>
+                    </td><!-- ========================================================================== -->
                     <!-- a funcao update()  foi criada no arquivo script.js presente no diretorio public. Ela fará a modificação dos itens e envio dos dados na forma de uma string para o servidor usando como rta /cadastro/update/ -->
                     <td  data-index-row="<%= index %>">
                         <a href="#" onclick="update('<%=index%>','<%= linkUpdate %>')" class="show"><i class="fas fa-pen"></i></a>  
@@ -75,6 +75,7 @@
                     <!-- para passar parametros para uma rota criada basta usar o delimitador "/" entre os valores dos parametros e defini-los no arquivo de rotas usando ":" para separar cada valor, seguido de um nome que identificarar esse valor. Exemplo: /cadastro/remove/:id -->
                     <td  data-index-row="<%= index %>">
                         <!-- <a href="#" class="show" onclick="remove('<%=index %>','<%=linkRemove%>')"><i class="fas fa-trash-alt"></i></a> -->
+                        <!--                       index: linha da tabela // users[index].name: string com o nome do usuário naquela posição // linkRemove="/cadastro/remove/"(rota que será tratada o post da informação)-->
                         <a href="#" class="show" onclick="remove('<%=index %>','<%=users[index].name %>','<%=linkRemove%>')"><i class="fas fa-trash-alt"></i></a>
                     </td>
                     </tr>
