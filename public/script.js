@@ -180,6 +180,7 @@ function remove(index,_name,link){
 
     http.send(dataToSend);//envia dados para o servidor na forma de JSON
     //o "envelope" na forma de 'http' foi criado e endereçado, resta preenchê-lo(passo anterior) e, agora, enviá-lo (http.send(conteúdoJSON))
+    //agora, olhemos para o que acontece na rota, quando enviamos a informação para processamento(lá na rota /cadastro/remove/ em routes.js)
 
     /* este codigo abaixo foi colocado para que a interface de cadastro so seja modificada quando se receber um aviso do servidor que a modificacao foi feita com sucesso. No caso o aviso vem na forma do codigo 200 de HTTP: OK */
 
@@ -198,13 +199,14 @@ function remove(index,_name,link){
 
     // baseado nos valores acima apresentados, o codigo abaixo mostra o que foi enviado pelo servidor como resposta ao envio de dados. No caso, se o request foi finalizado e o response foi recebido, a mensagem recebida do servidor eh mostrada no console do navegador. esse codigo foi feito apenas para verificar se tudo ocorreu bem no envio
 
-    http.onload = ()=>{ //aqui, basicamente, checamos se a operação de enviar o arquivo JSON para o endereço foi bem sucedida. se foi, chamamos a função descrita logo a seguir.
+    http.onload = ()=>{ //aqui, basicamente, checamos se a operação de enviar e processar o arquivo JSON para o endereço foi bem sucedida. se foi, chamamos a função descrita logo a seguir.
         
-        //seleciona todas as tags que sejam td 
+        //seleciona todas as tags que sejam tr 
         let tr = document.querySelector(`table#list > tbody > tr[data-index-row='${index}']`);
-
+        //todos os estados para o processamento da informação: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
+        // se a operação foi bem sucedida, podemos inferir que seu status é 200 (ok). se realmente for, prossiga.
         if (http.readyState === 4 && http.status === 200) {
-            tr.remove();
+            tr.remove(); //selecionamos essa linha da tabela ali em cima e guardamos em tr. agora estamos removendo(intuito da função remove())
             console.log(`Item ${index} removido com sucesso!`);
 
         } else {
@@ -215,8 +217,84 @@ function remove(index,_name,link){
     }
 }
    
-function add(data){
-    //Adiciona um dado novo
+function add(nome, email, endereço, altura, idade, vota, rota){
+    let name = document.getElementById(nome).value
+    let internetaddress = document.getElementById(email).value
+    let address = document.getElementById(endereço).value
+    let height = document.getElementById(altura).value
+    let age = document.getElementById(idade).value
+    let vote = document.getElementById(vota).value
+
+    if(
+        validarString(name) &&
+        validarEmail(internetaddress) &&
+        //sem formatação rigorosa para address
+        //sem formatação rigorosa para age
+        validarNumero(age)
+        //sem formatação pra vote
+    ){
+
+   const http = new XMLHttpRequest()
+   http.open('POST', rota, true)
+   http.setRequestHeader('Content-Type','application/json')
+
+   dataToSend = JSON.stringify({name: name,email: internetaddress,address: address,heigth: height,age: age,vote: vote })
+
+   http.send(dataToSend)
+
+
+
+   http.onload = ()=>{
+
+
+       if (http.readyState === 4 && http.status === 200) {
+        console.log(`usuário ${name} adicionado`)
+        window.location.href = '/cadastro'
+    } else {
+        console.log(`Erro durante a tentativa de adição do usuário: ${nome}! Código do Erro: ${http.status}`); 
+    }
+   }
+}
+}
+
+
+function validarString(string){
+    if(typeof string == 'string' && string !== ''){
+
+        for(let i = 0; i<string.length; i++){
+            if(string.charAt(i)!==' '){
+            if(string.charAt(i)/1 || string.charAt(i) == 0){
+                alert(`'${string}' é uma entrada inválida. (Contém números)`)
+                return null
+            }
+            }
+        }
+        return string
+
+    }
+
+    alert(`Digite um nome válido.`)
+    return null
+}
+function validarEmail(email){
+    if(typeof email == 'string' && email !== ''){
+        for(let i = 0; i<email.length; i++){
+            if(email.charAt(i) == '@'){
+                return email
+            }
+        }
+    }
+
+    alert(`Digite um email válido.`)
+    return null
+}
+function validarNumero(num){
+    if(typeof Number(num) == 'number' && Number.isInteger(Number(num))){
+        return num
+    }
+
+    alert(`Digite um número válido.`)
+    return null
 }
 
 function list(){
@@ -242,11 +320,3 @@ function list(){
     //}
 
 }
-
-// function selected(index){
-//     let itemsNavbar = document.querySelectorAll(`li.nav-item`);
-//     // for(let i = 0; i<itemsNavbar.length; i++){
-//     //     itemsNavbar[i].className = 'inactive'
-//     // }
-//     itemsNavbar[index-1].className = 'nav-item active'
-// }

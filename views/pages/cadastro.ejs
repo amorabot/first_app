@@ -18,8 +18,8 @@
         <thead class="thead-dark">
         <tr>
             <th>Nome</th>
-            <th>Endereço</th>
             <th>Email</th>
+            <th>Endereço</th>
             <th>Idade</th>
             <th>Altura</th>
             <th>Vota?</th>
@@ -32,6 +32,7 @@
 
             <% let linkRemove="/cadastro/remove/"; %>
             <% let linkUpdate="/cadastro/update/"; %>
+            <% let linkCadastro="/cadastro/add/"; %>
 
             <% if(users.length >0){%>
                 <% for(let index=0;index<users.length;index++){ %>
@@ -66,6 +67,7 @@
                     </td>
                     <td data-index-row="<%=index%>" class="hidden" data-index-row="<%=index%>">
                         <input type="button" value="Atualizar" class="hidden" >
+                        <!-- The HTML <input> name Attribute is used to specify a name for an <input> element. It is used to reference the form-data after submitting the form or to reference the element in a JavaScript. -->
                     </td><!-- ========================================================================== -->
                     <!-- a funcao update()  foi criada no arquivo script.js presente no diretorio public. Ela fará a modificação dos itens e envio dos dados na forma de uma string para o servidor usando como rta /cadastro/update/ -->
                     <td  data-index-row="<%= index %>">
@@ -86,7 +88,8 @@
         </tbody>
     </table>
     <h2>Cadastrar novo usuário</h2>
-    <form action="/cadastro/add" method="post">
+    <!-- <form action="/cadastro/add" method="post"> -->
+         <form name='cadastro' action='#'>
         <div class="form-group">
             <label for="_name">Nome:</label>
             <input type="text" name="_name" id="_name" class="form-control">
@@ -101,7 +104,7 @@
         </div>
         <div class="form-group">
             <label for="_heigth">Altura:</label>
-            <input type="text" name="_heigth" id="_heigth" class="form-control">
+            <input type="text" name="_height" id="_height" class="form-control">
         </div>
         <div class="form-group">
             <label for="_age">Idade:</label>
@@ -112,7 +115,7 @@
             <input type="text" name="_vote" id="_vote" class="form-control">
         </div>
         <div class="form-group">
-            <input type="submit" value="Enviar"  class="btn btn-success">
+            <input type="button" onclick="add('_name','_email','_address','_height','_age', '_vote','/cadastro/add/')" value="Enviar" class="btn btn-success">
         </div>
     </form>
     
