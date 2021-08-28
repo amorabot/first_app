@@ -1,5 +1,6 @@
 let cadastro;
 
+//SEMPRE LEMBRAR requisição -> middleware -> resposta
 
 function update(index,link){
     //seleciona todas as tags que sejam td 
@@ -230,7 +231,7 @@ function add(nome, email, endereço, altura, idade, vota, rota){
         validarEmail(internetaddress) &&
         //sem formatação rigorosa para address
         //sem formatação rigorosa para age
-        validarNumero(age)
+        validarAltura(age)
         //sem formatação pra vote
     ){
 
@@ -288,7 +289,7 @@ function validarEmail(email){
     alert(`Digite um email válido.`)
     return null
 }
-function validarNumero(num){
+function validarAltura(num){
     if(typeof Number(num) == 'number' && Number.isInteger(Number(num))){
         return num
     }
@@ -298,10 +299,19 @@ function validarNumero(num){
 }
 
 function list(){
-    //fazer em casa. Lista de usuários.
+    
+    const http = new XMLHttpRequest()
+    http.open('GET', '/listagem', true)
+    http.setRequestHeader('Content-Type','application/json')
 
-    //Primeira parte: envia mensagem para o servidor pedindo uma listagem dos usuários
-
+    http.send()
+    
+    http.onload = ()=>{
+        if (http.readyState === 4 && http.status === 200) {
+        //transforma a string  em formato JSON enviada pelo servidor novamente no seu tipo de dado anterior (lista de objetos)
+        let lista = JSON.parse(http.response);
+        console.log(lista)
+    }
     //Segunda parte: apos recebimento da lista de usuarios, no formato JSON, colocar os usuarios na interface
     let tableList = document.getElementById("list");
 
@@ -319,4 +329,5 @@ function list(){
         tableList.appendChild(tr);
     //}
 
+    }
 }
