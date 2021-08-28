@@ -32,26 +32,26 @@ router.get('/cadastro',(req,res)=>{
 });
 
 router.post('/cadastro/remove', (req,res)=>{
-    let name = req.body.name; //
+    let name = req.body.name; //exportamos, lá em script, a informação em forma de JSON para essa rota. dessa forma podemos acessar aqui a informação enviada de lá (estava na forma {name: nomeVariável})
     console.log(req.body)
-    if(users.length==0){
+    if(users.length==0){ //aqui testamos para o caso do vetor users não possuir usuários no momento:
         console.log("Erro: Não há elemento a ser removido!");
         return res.status(500).json({
             status:'error',
             error:`Removed element: ${name}`
         });
 
-    } else {
+    } else { //caso ele tenha usuários vamos manipulá-lo
         for(let cont=0;cont<users.length;cont++){
-            if(users[cont].name==name){
-                users.splice(cont,1);
-                console.log("Elemento Removido: ",name);
-                return res.status(200).json({
-                    status:'sucess',
+            if(users[cont].name==name){ //procuramos (com o for) no vetor de usuários da lista se algum deles bate com o usuário que queremos excluir
+                users.splice(cont,1); //achamos o usuário desejado-> vamos remover todos os itens relacionados a esse usuário (o objeto literal que corresponde a ele em users)
+                console.log("Elemento Removido: ",name); //loga no console que deu certo e diz qual usuário foi deletado
+                return res.status(200).json({ //outro ponto importante: aqui dizemos para o servidor que a operação foi concluída, mandando o status e um outro arquivo JSON(linguagem do servidor)
+                    status:'sucess',            //indicando sucesso e contendo o novo array de usuários, agora atualizado(sem o usuário deletado)
                     data:users
                 });
                 //res.send(JSON.stringify({sucess:`Elemento removido com sucesso: ${name}`}));
-            } else if(cont==users.length-1){
+            } else if(cont==users.length-1){ //se o for percorrer toda a lista e não achar, relatamos um erro(a mesma lógica acima)
                 console.log("Erro ao remover elemento: ",name);
                 return res.status(400).json({
                     status:'error',
@@ -86,20 +86,29 @@ router.get('/cadastro/list',(req,res)=>{
 router.post('/cadastro/add',(req,res)=>{
     let user={name:"",email:"",address:"",heigth:"",age:"",vote:""};
 
-    user.name = req.body._name;
-    user.email = req.body._email;
-    user.address = req.body._address;
-    user.heigth = req.body._heigth;
-    user.age = req.body._age;
-    user.vote = req.body._vote;
+    console.log(req.body)
+
+    user.name = req.body.name
+    user.email = req.body.email
+    user.address = req.body.address
+    user.heigth = req.body.heigth
+    user.age = req.body.age
+    user.vote = req.body.vote
+
+    // user.name = req.body._name;
+    // user.email = req.body._email;
+    // user.address = req.body._address;
+    // user.heigth = req.body._heigth;
+    // user.age = req.body._age;
+    // user.vote = req.body._vote;
 
     users.push(user);
-    console.log("Usuário cadastrado: ",user);
-    // console.log("Lista dos usuários: ",users); //nao use esta linha se tiver muitos elementos em users pois causara lentidao no servidor
-    res.sendStatus(200);
+    console.log("Usuário cadastrado(ROTA POST): ",user);
+    // // console.log("Lista dos usuários: ",users); //nao use esta linha se tiver muitos elementos em users pois causara lentidao no servidor
+    // res.sendStatus(200);
     res.status(200).json({
         status:'sucess',
-        data: `Usuário ${user} foi adiocionado com sucesso!`
+        data: users
     });
 
 });
