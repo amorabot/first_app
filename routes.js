@@ -80,8 +80,14 @@ router.post('/cadastro/update', (req,res)=>{
 
 router.get('/listagem',(req,res)=>{
     
-    res.status(200).send(JSON.stringify(users))
-
+    res.render('pages/listagem', {users: users})
+});
+router.get('/api/listagem',(req,res)=>{
+    
+    res.status(200).json({
+        status: 'sucess',
+        data: users
+    })
 });
 
 router.post('/cadastro/add',(req,res)=>{
