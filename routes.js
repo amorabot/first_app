@@ -78,9 +78,16 @@ router.post('/cadastro/update', (req,res)=>{
     console.log("Dados recebidos: ",req.body);//mostra no console do servidor os dados recebidos
 })
 
-router.get('/cadastro/list',(req,res)=>{
-    //Para fazer em casa: Como seria uma rotina para listar todos os itens cadastrados?
-
+router.get('/listagem',(req,res)=>{
+    
+    res.render('pages/listagem', {users: users})
+});
+router.get('/api/listagem',(req,res)=>{
+    
+    res.status(200).json({
+        status: 'sucess',
+        data: users
+    })
 });
 
 router.post('/cadastro/add',(req,res)=>{

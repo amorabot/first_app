@@ -1,5 +1,6 @@
 let cadastro;
 
+//SEMPRE LEMBRAR requisição -> middleware -> resposta
 
 function update(index,link){
     //seleciona todas as tags que sejam td 
@@ -229,9 +230,9 @@ function add(nome, email, endereço, altura, idade, vota, rota){
         validarString(name) &&
         validarEmail(internetaddress) &&
         //sem formatação rigorosa para address
-        //sem formatação rigorosa para age
-        validarNumero(age)
-        //sem formatação pra vote
+        validarAltura(height) &&
+        validarIdade(age) &&
+        validarVote(vote)
     ){
 
    const http = new XMLHttpRequest()
@@ -288,7 +289,7 @@ function validarEmail(email){
     alert(`Digite um email válido.`)
     return null
 }
-function validarNumero(num){
+function validarIdade(num){
     if(typeof Number(num) == 'number' && Number.isInteger(Number(num))){
         return num
     }
@@ -296,27 +297,52 @@ function validarNumero(num){
     alert(`Digite um número válido.`)
     return null
 }
+function validarAltura(height){
+    if(typeof Number(height == 'number' && (height<=3 && height>0))){
+        return String(Number(height).toFixed(2))
+    }
+
+    alert(`Digite uma altura válida.`)
+    return null
+}
+
+function validarVote(vote){
+    if(vote == 'true' || vote == 'false'){
+        return vote
+    }
+    alert(`Campo 'vote' inválido. (Apenas valores 'true' ou 'false' são aceitos.)`)
+}
 
 function list(){
-    //fazer em casa. Lista de usuários.
+    
+    const http = new XMLHttpRequest()
+    http.open('GET', '/listagem', true)
+    http.setRequestHeader('Content-Type','application/json')
 
-    //Primeira parte: envia mensagem para o servidor pedindo uma listagem dos usuários
-
+    http.send()
+    
+    http.onload = ()=>{
+        if (http.readyState === 4 && http.status === 200) {
+        //transforma a string  em formato JSON enviada pelo servidor novamente no seu tipo de dado anterior (lista de objetos)
+        let lista = JSON.parse(http.response);
+        console.log(lista, http.response)
+    }
     //Segunda parte: apos recebimento da lista de usuarios, no formato JSON, colocar os usuarios na interface
-    let tableList = document.getElementById("list");
-
-    let tr = document.createElement("tr");
-    let td = document.createElement("td");
-    let span = document.createElement("span");
-    let cont;
-    //for(let cont=0;cont<datas.length;cont++){ 
-        td.setAttribute(`data-index-row=${cont}`);
-        span.innerHTML =  Object.keys(datas[cont])[0] //keys 0 - name, 1 - email
-        span.className="show";
-        td.appendChild(span);
-        tr.appendChild(td);
+    //===
+    // let tableList = document.getElementById("list");
+    // let tr = document.createElement("tr");
+    // let td = document.createElement("td");
+    // let span = document.createElement("span");
+    // let cont;
+    // //for(let cont=0;cont<datas.length;cont++){ 
+    //     td.setAttribute(`data-index-row=${cont}`);
+    //     span.innerHTML =  Object.keys(datas[cont])[0] //keys 0 - name, 1 - email
+    //     span.className="show";
+    //     td.appendChild(span);
+    //     tr.appendChild(td);
         
-        tableList.appendChild(tr);
-    //}
-
+    //     tableList.appendChild(tr);
+    // //}
+    //===
+    }
 }
