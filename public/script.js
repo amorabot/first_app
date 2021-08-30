@@ -39,7 +39,7 @@ function update(index,link){
 
     //escuta se o botao foi clicado
     button.addEventListener('click',()=>{
-        const http = new XMLHttpRequest(); //XHR - cria um objeto para requisição ao servidor
+        const http = new XMLHttpRequest(); //XML - cria um objeto para requisição ao servidor
         const url=link; //"/cadastro/update";
         let data = {id:"",name:"",email:"",address:"",age:"",heigth:"",vote:""};
         let dataToSend;
@@ -222,7 +222,7 @@ function add(nome, email, endereço, altura, idade, vota, rota){
     let name = document.getElementById(nome).value
     let internetaddress = document.getElementById(email).value
     let address = document.getElementById(endereço).value
-    let height = document.getElementById(altura).value
+    let heightUser = document.getElementById(altura).value
     let age = document.getElementById(idade).value
     let vote = document.getElementById(vota).value
 
@@ -230,7 +230,7 @@ function add(nome, email, endereço, altura, idade, vota, rota){
         validarString(name) &&
         validarEmail(internetaddress) &&
         //sem formatação rigorosa para address
-        validarAltura(height) &&
+        validarAltura(heightUser) &&
         validarIdade(age) &&
         validarVote(vote)
     ){
@@ -239,7 +239,7 @@ function add(nome, email, endereço, altura, idade, vota, rota){
    http.open('POST', rota, true)
    http.setRequestHeader('Content-Type','application/json')
 
-   dataToSend = JSON.stringify({name: name,email: internetaddress,address: address,heigth: height,age: age,vote: vote })
+   dataToSend = JSON.stringify({name: name,email: internetaddress,address: address,heigth: heightUser,age: age,vote: vote })
 
    http.send(dataToSend)
 
@@ -252,7 +252,7 @@ function add(nome, email, endereço, altura, idade, vota, rota){
         console.log(`usuário ${name} adicionado`)
         window.location.href = '/cadastro'
     } else {
-        console.log(`Erro durante a tentativa de adição do usuário: ${nome}! Código do Erro: ${http.status}`); 
+        console.log(`Erro durante a tentativa de adição do usuário: ${name}! Código do Erro: ${http.status}`); 
     }
    }
 }
@@ -299,7 +299,8 @@ function validarIdade(num){
 }
 function validarAltura(height){
     if(typeof Number(height == 'number' && (height<=3 && height>0))){
-        return String(Number(height).toFixed(2))
+        heightUser = String(Number(height).toFixed(2))
+        return height
     }
 
     alert(`Digite uma altura válida.`)
@@ -311,6 +312,7 @@ function validarVote(vote){
         return vote
     }
     alert(`Campo 'vote' inválido. (Apenas valores 'true' ou 'false' são aceitos.)`)
+    return null
 }
 
 function list(){
