@@ -18,11 +18,11 @@ http://localhost:3000/index.html
 //método get: quando o usuário solicita conteúdo daquela rota ('/' nesse caso) a funcionalidade é executada
 //os parametros na callback(req,res) são passados pelo método get: a requisição de info feita ao navegador e a resposta para ele. os nomes das var. não importam.
 router.get('/', (req, res)=>{ 
-    res.render('pages/home'); //posso omitir a extensão (era pra ser home.ejs)
+    res.render('pages/home') //posso omitir a extensão (era pra ser home.ejs)
 })
 
 router.get('/about', (req,res)=>{
-    res.render('pages/about');
+    res.render('pages/about')
 });
 
 router.get('/cadastro',(req,res)=>{
@@ -35,7 +35,7 @@ router.post('/cadastro/remove', (req,res)=>{
     let name = req.body.name; //exportamos, lá em script, a informação em forma de JSON para essa rota. dessa forma podemos acessar aqui a informação enviada de lá (estava na forma {name: nomeVariável})
     console.log(req.body)
     if(users.length==0){ //aqui testamos para o caso do vetor users não possuir usuários no momento:
-        console.log("Erro: Não há elemento a ser removido!");
+        console.log("Erro: Não há elemento a ser removido!")
         return res.status(500).json({
             status:'error',
             error:`Removed element: ${name}`
@@ -45,7 +45,7 @@ router.post('/cadastro/remove', (req,res)=>{
         for(let cont=0;cont<users.length;cont++){
             if(users[cont].name==name){ //procuramos (com o for) no vetor de usuários da lista se algum deles bate com o usuário que queremos excluir
                 users.splice(cont,1); //achamos o usuário desejado-> vamos remover todos os itens relacionados a esse usuário (o objeto literal que corresponde a ele em users)
-                console.log("Elemento Removido: ",name); //loga no console que deu certo e diz qual usuário foi deletado
+                console.log("Elemento Removido: ",name) //loga no console que deu certo e diz qual usuário foi deletado
                 return res.status(200).json({ //outro ponto importante: aqui dizemos para o servidor que a operação foi concluída, mandando o status e um outro arquivo JSON(linguagem do servidor)
                     status:'sucess',            //indicando sucesso e contendo o novo array de usuários, agora atualizado(sem o usuário deletado)
                     data:users
@@ -81,13 +81,13 @@ router.post('/cadastro/update', (req,res)=>{
 router.get('/listagem',(req,res)=>{
     
     res.render('pages/listagem', {users: users})
+    
 });
 router.get('/api/listagem',(req,res)=>{
-    
     res.status(200).json({
-        status: 'sucess',
+        status: 'success',
         data: users
-    })
+    });
 });
 
 router.post('/cadastro/add',(req,res)=>{
