@@ -327,8 +327,27 @@ function list(){
         if (http.readyState === 4 && http.status === 200) {
         //transforma a string  em formato JSON enviada pelo servidor novamente no seu tipo de dado anterior (lista de objetos)
         let lista = JSON.parse(http.response)
-        let paragrafoTeste = document.getElementById('pteste')
-        paragrafoTeste.innerText = lista.users[5].name
+
+
+        for(let i = 0; i<lista.users.length; i++){
+            let containerLista = document.getElementById('container-lista')
+            let div = document.createElement('div')
+            let paragrafo = document.createElement('p')
+            let unorderedList = document.createElement('ul')
+            let carac1 = document.createElement('li')
+            let carac2 = document.createElement('li')
+
+            containerLista.appendChild(div)
+            div.appendChild(paragrafo)
+            div.appendChild(unorderedList)
+            unorderedList.appendChild(carac2)
+            unorderedList.appendChild(carac1)
+            paragrafo.innerText = `${lista.users[i].name}`
+            
+            carac1.innerText = `Email: ${lista.users[i].email}`
+            carac2.innerText = `Idade: ${lista.users[i].age}`
+        }
+
     }
     //Segunda parte: apos recebimento da lista de usuarios, no formato JSON, colocar os usuarios na interface
     //===
