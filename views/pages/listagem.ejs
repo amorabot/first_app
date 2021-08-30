@@ -1,8 +1,11 @@
 <%- contentFor( 'body' ) %>
 
-<h3 style="text-align: center;"><a href='/api/listagem'>Listagem completa pode ser encontrada aqui!</a></h3>
+<h3 style="text-align: center;"><a id='apilink' href='/api/listagem' style='font-family: Verdana, Geneva, Tahoma, sans-serif;'>Listagem completa pode ser encontrada aqui!</a></h3>
 
 <div id='lista' class='buttonlist'>
-    <button onclick="list()" type='button' class='btn' style='color: whitesmoke; background-color: rgb(110, 97, 196);'>Listagem(Simplificada) dos usuários:</button>
+    <button onclick="list()" type='button' class='btn' style='color: whitesmoke; background-color: rgb(110, 97, 196);'>-Mostrar lista simplificada-</button>
 </div>
-<p id='pteste' style='text-align: center;'>testandosdoaidjas</p>
+<!-- <p id='pteste' style='text-align: center;'>testandosdoaidjas</p> -->
+<p style='text-align: center;'>Lista:</p>
+<div id='container-lista' style='display: grid; grid-template-columns: repeat(4, auto); justify-content: center; gap: 40px'>
+</div>

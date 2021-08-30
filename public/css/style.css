@@ -19,3 +19,6 @@ html{
     display: flex;
     justify-content: center;
 }
+a#apilink:visited {
+    color: rgb(110, 97, 196);
+}
