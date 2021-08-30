@@ -1,3 +1,4 @@
+const { json } = require('express');
 const express = require('express');
 const router = express.Router();
 
@@ -79,10 +80,16 @@ router.post('/cadastro/update', (req,res)=>{
 })
 
 router.get('/listagem',(req,res)=>{
-    
-    res.render('pages/listagem', {users: users})
+    // console.log("Olha a lista ae: ",users)
+    console.log('listagem funcionando(RENDERIZANDO /LISTAGEM)')
+    res.status(200).render('pages/listagem')
+    // res.status(200).json({users: users})
     
 });
+router.get('/listagem/update',(req,res)=>{
+    res.status(200).send(JSON.stringify({users: users}))
+});
+
 router.get('/api/listagem',(req,res)=>{
     res.status(200).json({
         status: 'success',
