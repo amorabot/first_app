@@ -2,7 +2,7 @@ let cadastro;
 
 //SEMPRE LEMBRAR requisição -> middleware -> resposta
 
-function update(index,link){
+function update(index,link){ //link aqui é /cadastro/update/
     //seleciona todas as tags que sejam td 
     let tds = document.querySelectorAll(`td[data-index-row='${index}']`); //as td's contêm os itens desejados, será útil selecioná-las
     let spans = document.querySelectorAll(`td[data-index-row='${index}'] > span`); //dentro da td especificada, selecionamos os span dentro dela (>span)
@@ -40,7 +40,7 @@ function update(index,link){
     //escuta se o botao foi clicado
     button.addEventListener('click',()=>{
         const http = new XMLHttpRequest(); //XML - cria um objeto para requisição ao servidor
-        const url=link; //"/cadastro/update";
+        const url=link; // "/cadastro/update";
         let data = {id:"",name:"",email:"",address:"",age:"",heigth:"",vote:""};
         let dataToSend;
 
@@ -318,16 +318,17 @@ function validarVote(vote){
 function list(){
     
     const http = new XMLHttpRequest()
-    http.open('GET', '/listagem', true)
+    http.open('GET', '/listagem/update', true)
     http.setRequestHeader('Content-Type','application/json')
 
     http.send()
-    
+
     http.onload = ()=>{
         if (http.readyState === 4 && http.status === 200) {
         //transforma a string  em formato JSON enviada pelo servidor novamente no seu tipo de dado anterior (lista de objetos)
-        let lista = JSON.parse(http.response);
-        console.log(lista, http.response)
+        let lista = JSON.parse(http.response)
+        let paragrafoTeste = document.getElementById('pteste')
+        paragrafoTeste.innerText = lista.users[5].name
     }
     //Segunda parte: apos recebimento da lista de usuarios, no formato JSON, colocar os usuarios na interface
     //===
